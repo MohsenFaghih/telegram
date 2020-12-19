@@ -9,7 +9,7 @@ class Telegram_controller extends BaseController{
 			$url="https://api.telegram.org/bot1456393662:AAE6ckb3yoCRRoR9EOi-aB3GvcsRDhvTUJQ/";
 
 	public function index(){
-		echo 'hi';
+		echo 'hi new';
 	}
 
 	private function loadUrl($url = "https://tg.kia24.com/publicn", $params=array()){
