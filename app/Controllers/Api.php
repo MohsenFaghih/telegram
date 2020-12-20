@@ -14,12 +14,11 @@ class Api extends BaseController
         $info = array(
             'text' => "به فروشگاه محله خوش آمدید\nلطفا از منو  گزینه مناسب را انتخاب نمایید",
             'keyboard' => array(
-                array('title'=>'دسته محصولات','link'=>base_url('getCategories')),
-                array('title'=>'تماس با ما',
-                      'link'=>base_url('contact')),
-                array('title'=>'جستجوی محصولات','link'=>base_url('searchProducts')),
-                array('title'=>'سبد خرید','link'=>base_url('basket')),
-                array('title'=>'پیگیری سفارش','link'=>base_url('tracking')),
+                array('title'=>'دسته محصولات','link'=>('getCategories')),
+                array('title'=>'تماس با ما', 'link'=>('contact')),
+                array('title'=>'جستجوی محصولات','link'=>('searchProducts')),
+                array('title'=>'سبد خرید','link'=>('basket')),
+                array('title'=>'پیگیری سفارش','link'=>('tracking')),
             )
         ); 
         $this->showResult(200,$info) ;
@@ -37,12 +36,12 @@ class Api extends BaseController
                        'link' => base_url('Api/getCatProducts/3')),
             ),
             'keyboard' => array(
-                array('title'=>'دسته محصولات','link'=>base_url('getCategories')),
+                array('title'=>'دسته محصولات','link'=>('getCategories')),
                 array('title'=>'تماس با ما',
-                      'link'=>base_url('contact')),
-                array('title'=>'جستجوی محصولات','link'=>base_url('searchProducts')),
-                array('title'=>'سبد خرید','link'=>base_url('basket')),
-                array('title'=>'پیگیری سفارش','link'=>base_url('tracking')),
+                      'link'=>('contact')),
+                array('title'=>'جستجوی محصولات','link'=>('searchProducts')),
+                array('title'=>'سبد خرید','link'=>('basket')),
+                array('title'=>'پیگیری سفارش','link'=>('tracking')),
             )
         );
         $this->showResult(200,$info);

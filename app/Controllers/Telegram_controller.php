@@ -74,7 +74,7 @@ class Telegram_controller extends BaseController{
 				$temp[] = array("text" => $content[$i]->title, "callback_data" => $content[$i]->link);
 			};
 			if(isset($content[$i+2])){
-				$temp[] = array("text" => $content[$i+1]->title, "callback_data" => $content[$i+1]->title);
+				$temp[] = array("text" => $content[$i+1]->title, "callback_data" => $content[$i+1]->link);
 			};
 			$keyboardArray[] = $temp;
 		}
@@ -97,56 +97,49 @@ class Telegram_controller extends BaseController{
 	}
 
 	public function getUpdates(){
-		echo(FCPATH.$this->offset_file);
 		$offset = file_exists(FCPATH.$this->offset_file) ? file_get_contents($this->offset_file) : 0;	
-		// var_dump($offset); die;
 		$result = $this->loadUrl($this->url."getUpdates?offset=".$offset);
 		$this->responseToMessage($result);
 	}
 
-
-	public function replyToTelegram($data){
-		$chat_id = isset($data['data']['chat_id']) ? $data['data']['chat_id'] : '';
+	public function replyToTelegram($data, $chat_id){	
 		$text = isset($data['text']) ? str_replace(PHP_EOL, '', $data['text']) : '';
 		$keyboard = isset($data['keyboard']) ? str_replace(PHP_EOL, '', $data['keyboard']) : '';
 		$inlineKeyboard = isset($data['inlineKeyboard']) ? str_replace(PHP_EOL, '', $data['inlineKeyboard']) : '';
 		$media = isset($data['media']) ? $data['media'] : '';
-
-		
 		if(isset($Keyboard)){
 			$this->loadUrl("https://api.telegram.org/bot".$this->token."/sendMessage?chat_id=".$chat_id."&text=".$text."&ReplyKeyboardMarkup=".$keyboard);
-			exit();
 		}
 		if(isset($media) && !isset($keyboard)){
 			$this->loadUrl("https://api.telegram.org/bot".$this->token."/sendMediaGroup?chat_id=".$chat_id."&media=".$media);
-			exit();
+
 		}
 		if(isset($photo)){
 			$this->loadUrl("https://api.telegram.org/bot".$this->token."/sendMediaGroup?chat_id=".$chat_id."&photo=".$photo);
-			exit();
-		}			
+		}	
+				
 		if(isset($inlineKeyboard)){
 			$this->loadUrl("https://api.telegram.org/bot".$this->token."/sendMessage?chat_id=".$chat_id."&text=".$text."&reply_markup=".$inlineKeyboard);
-			exit();
+
 		}
 	}
 
 	public function responseToMessage($sendMessage){
 		$data = array();
 		$last_update_id = 0;
-		
+		var_dump($sendMessage);
 		foreach($sendMessage->result as $items){
-			var_dump($items);
+	
 			if(isset($items->callback_query)){
 				$data['callback_query_id'] = $items->callback_query->id;
-				$data['text'] = $items->data;
+				$data['text'] = $items->callback_query->data;
 				$this->loadUrl($this->url."/answerCallbackQuery?callback_query_id=".$items->callback_query->id);
 				echo ('call back answered:'.$items->callback_query->id);
 			}
 			else{
-				$data['text'] = isset($items->message->from->text) ? $items->message->from->text: '';
+				$data['text'] = isset($items->message->text) ? $items->message->text: '';
 			}
-
+			
 			$data['update_id'] = isset($items->update_id) ? $items->update_id : '';
 			$data['message_id'] = isset($items->message->message_id) ? $items->message->message_id: '';
 			$data['from_id'] = isset($items->message->from->id) ? $items->message->from->id: '';
@@ -154,19 +147,15 @@ class Telegram_controller extends BaseController{
 			$data['username'] = isset($items->message->from->username) ? $items->message->from->username: '';
 			$data['chat_id'] =isset($items->message->chat->id) ? $items->message->chat->id: '';
 			$data['chat_type'] = isset($items->message->chat->type) ? $items->message->chat->type: '';
-			$data['date'] = isset($items->message->date) ? $items->message->date: '';
+			$data['date'] = isset($items->message->date) ? $items->message->date: '';	
+			if(isset($items->message->entities)){
+				foreach($items->message->entities as $item){
+					$data['entities'][] = $item;
+				}
+			}
 			
-			$data['offset'] = isset($items->message->entities['0']->offset) ? $items->message->entities['0']->offset  : '';
-			$data['length'] = isset($items->message->entities['0']->length) ? $items->message->entities['0']->length : '';
-			$data['type'] = isset($items->message->entities['0']->type) ? $items->message->entities['0']->type : '';
-
-			// foreach($items->message->entities as $item){
-			// 	$data['entities']['offset'] = $item->offset;
-			// 	$data['entities']['length'] = $item->length;
-			// 	$data['entities']['type'] = $item->type;
-			// }
-
 			$apiUrl  = array(
+				'hello' => "https://tg.kia24.com/public/api/defaultMessage",
 				'/start' =>  "https://tg.kia24.com/public/api/getWelcomeScreen",
 				'getCategories'=> "https://tg.kia24.com/public/api/getCategories" ,
 				'دسته محصولات'=> "https://tg.kia24.com/public/api/getCategories" ,
@@ -174,21 +163,21 @@ class Telegram_controller extends BaseController{
 				'topSellItems'=> "https://tg.kia24.com/public/api/topSellItems" ,
 				'topSellItems'=> "https://tg.kia24.com/public/api/topSellItems" ,
 			);
-
 			$renderedContent = $url = '';
-
-			if(isset($apiUrl[$data["text"]]))
+			if(isset($apiUrl[$data["text"]])){
 				$url = $apiUrl[$data["text"]];
-			else 
-				$url = "https://tg.kia24.com/public/api/defaultMessage";
-			
+			}
+							
 			$content = $this->loadUrl($url);
-			$renderedContent = $this->renderForTelegram($content->content, $data);
-			$this->replyToTelegram($renderedContent);
+			if(isset($content->content)){
+				$renderedContent = $this->renderForTelegram($content->content, $data);
+				$chat_id = $items->message->chat->id;
+				$this->replyToTelegram($renderedContent, $chat_id);
+			}
 			$last_update_id = $items->update_id;
-			
 		}
+		if($last_update_id != '0')
+			file_put_contents(FCPATH.$this->offset_file, $last_update_id);
 		echo ('updated');
-		file_put_contents(FCPATH.$this->offset_file, $last_update_id);
 	}
 }
