@@ -12,7 +12,7 @@ class Telegram_controller extends BaseController{
 		echo 'hi new';
 	}
 
-	private function loadUrl($url = "https://tg.kia24.com/publicn", $params=array()){
+	private function loadUrl($url = "https://tg.kia24.com/public", $params=array()){
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 		if(!empty($params)){
@@ -92,7 +92,6 @@ class Telegram_controller extends BaseController{
 			for($i = 0; $i < count($content); $i++){
 				$media[] = array('type' => 'photo', 'media' => $content[$i]->picture, 'caption' => $content[$i]->title, 'link' => $content[$i]->link);
 			}
-			// $media['reply_to_message_id'] = 
 		}
 		return $media;
 	}
@@ -102,12 +101,7 @@ class Telegram_controller extends BaseController{
 		$offset = file_exists(FCPATH.$this->offset_file) ? file_get_contents($this->offset_file) : 0;	
 		// var_dump($offset); die;
 		$result = $this->loadUrl($this->url."getUpdates?offset=".$offset);
-
-		// $data = $this->responseToMessage($result);
-
-			$this->responseToMessage($result);
-
-
+		$this->responseToMessage($result);
 	}
 
 
@@ -150,7 +144,6 @@ class Telegram_controller extends BaseController{
 				echo ('call back answered:'.$items->callback_query->id);
 			}
 			else{
-				// $data['text'] = isset($items->message->text) ? $items->message->text: '';
 				$data['text'] = isset($items->message->from->text) ? $items->message->from->text: '';
 			}
 
@@ -183,6 +176,7 @@ class Telegram_controller extends BaseController{
 			);
 
 			$renderedContent = $url = '';
+
 			if(isset($apiUrl[$data["text"]]))
 				$url = $apiUrl[$data["text"]];
 			else 
@@ -196,7 +190,5 @@ class Telegram_controller extends BaseController{
 		}
 		echo ('updated');
 		file_put_contents(FCPATH.$this->offset_file, $last_update_id);
-		
 	}
-
 }
