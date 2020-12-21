@@ -28,20 +28,16 @@ class Api extends BaseController
         $info = array(
             'text'=> 'تمامی دسته بندی هایی که در این بخش خواهید دید با محصولات دیده میشود',
             'categories' => array(
-                array('title'=>'خرسی',
-                       'link' => base_url('Api/getCatProducts/1')),
-                array('title'=>'خرگوشی',
-                       'link' => base_url('Api/getCatProducts/2')),
-                array('title'=>'حوله ای',
-                       'link' => base_url('Api/getCatProducts/3')),
+                array('title'=>'خرسی', 'link' => 'getCatProducts'),
+                array('title'=>'خرگوشی', 'link' => 'getCatProducts'),
+                array('title'=>'حوله ای', 'link' => 'getCatProducts'),
             ),
             'keyboard' => array(
-                array('title'=>'دسته محصولات','link'=>('getCategories')),
-                array('title'=>'تماس با ما',
-                      'link'=>('contact')),
-                array('title'=>'جستجوی محصولات','link'=>('searchProducts')),
-                array('title'=>'سبد خرید','link'=>('basket')),
-                array('title'=>'پیگیری سفارش','link'=>('tracking')),
+                array('title'=>'دسته محصولات','link'=>'getCategories'),
+                array('title'=>'تماس با ما', 'link'=>'contact'),
+                array('title'=>'جستجوی محصولات','link'=>'searchProducts'),
+                array('title'=>'سبد خرید','link'=>'basket'),
+                array('title'=>'پیگیری سفارش','link'=>'tracking'),
             )
         );
         $this->showResult(200,$info);
@@ -65,11 +61,11 @@ class Api extends BaseController
                       'link' => ('Api/getProductVarient/3') ),
             ),
             'keyboard' => array(
-                array('title'=>'دسته محصولات','link'=>('getCategories')),
-                array('title'=>'تماس با ما', 'link'=>('contact')),
-                array('title'=>'جستجوی محصولات','link'=>('searchProducts')),
-                array('title'=>'سبد خرید','link'=>('basket')),
-                array('title'=>'پیگیری سفارش','link'=>('tracking')),
+                array('title'=>'دسته محصولات','link'=>'getCategories'),
+                array('title'=>'تماس با ما', 'link'=>'contact'),
+                array('title'=>'جستجوی محصولات','link'=>'searchProducts'),
+                array('title'=>'سبد خرید','link'=>'basket'),
+                array('title'=>'پیگیری سفارش','link'=>'tracking'),
             )
         );
         if($page > 2) $info['products'] = array();  
