@@ -99,6 +99,7 @@ class Telegram_controller extends BaseController{
 	public function getUpdates(){
 		$offset = file_exists(FCPATH.$this->offset_file) ? file_get_contents($this->offset_file) : 0;	
 		$result = $this->loadUrl($this->url."getUpdates?offset=".$offset);
+		var_dump($result);
 		if($result){
 			foreach($result->result as $items){
 				if($items->update_id != $offset)
@@ -156,7 +157,6 @@ class Telegram_controller extends BaseController{
 					$data['entities'][] = $item;
 				}
 			}
-			
 			$apiUrl  = array(
 				'hello' => "https://tg.kia24.com/public/api/defaultMessage",
 				'/start' =>  "https://tg.kia24.com/public/api/getWelcomeScreen",

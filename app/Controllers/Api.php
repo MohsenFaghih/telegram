@@ -14,11 +14,11 @@ class Api extends BaseController
         $info = array(
             'text' => "به فروشگاه محله خوش آمدید\nلطفا از منو  گزینه مناسب را انتخاب نمایید",
             'keyboard' => array(
-                array('title'=>'دسته محصولات','link'=>('getCategories')),
-                array('title'=>'تماس با ما', 'link'=>('contact')),
-                array('title'=>'جستجوی محصولات','link'=>('searchProducts')),
-                array('title'=>'سبد خرید','link'=>('basket')),
-                array('title'=>'پیگیری سفارش','link'=>('tracking')),
+                array('title'=>'دسته محصولات','link'=>'getCategories'),
+                array('title'=>'تماس با ما', 'link'=>'contact'),
+                array('title'=>'جستجوی محصولات','link'=>'searchProducts'),
+                array('title'=>'سبد خرید','link'=>'basket'),
+                array('title'=>'پیگیری سفارش','link'=>'tracking'),
             )
         ); 
         $this->showResult(200,$info) ;
