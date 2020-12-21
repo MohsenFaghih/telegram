@@ -20,7 +20,7 @@ class Api extends BaseController
                 array('title'=>'سبد خرید','link'=>'basket'),
                 array('title'=>'پیگیری سفارش','link'=>'tracking'),
             )
-        ); 
+        );
         $this->showResult(200,$info) ;
     }
 
