@@ -13,7 +13,7 @@ class Api extends BaseController
     public function getWelcomeScreen(){
         $info = array(
             'text' => "به فروشگاه محله خوش آمدید\nلطفا از منو  گزینه مناسب را انتخاب نمایید",
-            'keyboard' => array(
+            'keyboards' => array(
                 array('title'=>'دسته محصولات','link'=>'getCategories'),
                 array('title'=>'تماس با ما', 'link'=>'contact'),
                 array('title'=>'جستجوی محصولات','link'=>'searchProducts'),
@@ -345,12 +345,12 @@ class Api extends BaseController
         $info = array(
             'text' => "پیام شما مفهوم نیست لطفا از لیست زیر کمک بگیرید",
             'default' => array(
-                array('title'=>'دسته محصولات','link'=>base_url('getCategories')),
+                array('title'=>'دسته محصولات','link'=>'getCategories'),
                 array('title'=>'تماس با ما',
-                      'link'=>base_url('contact')),
-                array('title'=>'جستجوی محصولات','link'=>base_url('searchProducts')),
-                array('title'=>'سبد خرید','link'=>base_url('basket')),
-                array('title'=>'پیگیری سفارش','link'=>base_url('tracking')),
+                      'link'=>'contact'),
+                array('title'=>'جستجوی محصولات','link'=>'searchProducts'),
+                array('title'=>'سبد خرید','link'=>'basket'),
+                array('title'=>'پیگیری سفارش','link'=>'tracking'),
             )
         ); 
         $this->showResult(200,$info) ;
