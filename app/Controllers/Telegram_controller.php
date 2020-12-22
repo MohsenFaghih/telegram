@@ -103,7 +103,6 @@ class Telegram_controller extends BaseController{
 	public function getUpdates(){
 		$offset = file_exists(FCPATH.$this->offset_file) ? file_get_contents($this->offset_file) : 0;	
 		$result = $this->loadUrl($this->url."getUpdates?offset=".$offset);
-		var_dump($result, $offset);
 		if(isset($result)){
 			foreach($result->result as $items){
 				if($items->update_id != $offset)
@@ -178,7 +177,11 @@ class Telegram_controller extends BaseController{
 			$content = $this->loadUrl($url);
 			if(isset($content->content)){
 				$renderedContent = $this->renderForTelegram($content->content, $data);
-				$chat_id = $items->message->chat->id;
+				if(isset($items->message->chat->id))
+					$chat_id = $items->message->chat->id;
+				// var_dump($chat_id); die();
+				// if(isset($items->message->chat->id)){
+				// 	$chat_id = $items->message->chat->id;
 				$this->replyToTelegram($renderedContent, $chat_id);
 			}
 			$last_update_id = $items->update_id;
