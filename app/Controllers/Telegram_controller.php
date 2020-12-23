@@ -22,6 +22,7 @@ class Telegram_controller extends BaseController{
 			print curl_error($ch); 
 		}
 		$result = curl_exec($ch);
+		var_dump($url);
 		$result = json_decode($result);
 		curl_close($ch);
 		return $result; 
@@ -35,7 +36,11 @@ class Telegram_controller extends BaseController{
 			$result["text"] = $text_reply;
 		}
 		if(isset($content->keyboards)){
-			$keyboard = $this->renderInlineButton($content->keyboards);
+			$keyboard = $this->renderKeyboards($content->keyboards);
+			$result['keyboard'] = $keyboard;
+		}
+		if(isset($content->keyboard)){
+			$keyboard = $this->renderInlineButton($content->keyboard);
 			$result['keyboard'] = $keyboard;
 		}
 		if(isset($content->default)){
@@ -50,30 +55,26 @@ class Telegram_controller extends BaseController{
 			$media = $this->renderMedia($content->products);
 			$result["media"] = json_encode($media);
 		}
-		// if(isset($content->keyboard)){
-		// 	$keyboard = $this->renderKeyboard($content->keyboard);
-		// 	$result["keyboard"] = $keyboard;
-		// }
 		return $result;
 	}
 	
-	// private function renderKeyboard($content){ // not yet
-	// 	$final = array();
-	// 	for($i = 0 ; $i < count($content); $i+=2){
-	// 		$temp=array();
-	// 		if(isset($content[$i])){
-	// 			$temp[] = array($content[$i]->title);
-	// 		};
-	// 		if(isset($content[$i+1])){
-	// 			$temp[] = array($content[$i+1]->title);
-	// 		};
-	// 		$final['keyboard'][] = $temp;
-	// 	}
-	// 	$final['keyboard']['one_time_keyboard'] = false;
-	// 	$final['keyboard']['resize_keyboard'] = true;
-	// 	$final['keyboard']['hide_keyboard'] = false;
-	// 	return json_encode($final);;
-	// }
+	private function renderKeyboards($content){ // not yet
+		$final = array();
+		for($i = 0 ; $i < count($content); $i+=2){
+			$temp=array();
+			if(isset($content[$i])){
+				$temp[] = $content[$i]->title;
+			};
+			if(isset($content[$i+1])){
+				$temp[] = $content[$i+1]->title;
+			};
+			$final['KeyboardButton'][] = $temp;
+		}
+		$final['KeyboardButton']['one_time_keyboard'] = false;
+		$final['KeyboardButton']['resize_keyboard'] = true;
+		// var_dump($final); die;
+		return json_encode($final);;
+	}
 
 	public function renderInlineButton($content=''){
 		$keyboardArray = array();
@@ -129,6 +130,7 @@ class Telegram_controller extends BaseController{
 	public function getUpdates(){
 		$offset = file_exists(FCPATH.$this->offset_file) ? file_get_contents($this->offset_file) : 0;
 		$result = $this->loadUrl($this->url."getUpdates?offset=".$offset);
+		// var_dump($result); die;
 		if(isset($result)){
 			foreach($result->result as $items){
 				if($items->update_id != $offset)
@@ -137,15 +139,20 @@ class Telegram_controller extends BaseController{
 		}
 	}
 
-	public function replyToTelegram($data, $chat_id){	
+	public function replyToTelegram($data){	
 		$text = isset($data['text']) ? str_replace(PHP_EOL, '', $data['text']) : '';
-		$keyboard = isset($data['keyboard']) ? str_replace(PHP_EOL, '', $data['keyboard']) : '';
+		// $keyboard = isset($data['keyboard']) ? str_replace(PHP_EOL, '', $data['keyboard']) : '';
+		$keyboards = isset($data['keyboard']) ? str_replace(PHP_EOL, '', $data['keyboard']) : '';
 		$inlineKeyboard = isset($data['inlineKeyboard']) ? str_replace(PHP_EOL, '', $data['inlineKeyboard']) : '';
 		$media = isset($data['media']) ? $data['media'] : '';
-
-		if(isset($Keyboard)){
-			$this->loadUrl("https://api.telegram.org/bot".$this->token."/sendMessage?chat_id=".$chat_id."&text=".$text."&reply_markup=".$keyboard);
+		$chat_id = $data['data']['chat_id'];
+	
+		if(isset($keyboards)){
+			$this->loadUrl("https://api.telegram.org/bot".$this->token."/sendMessage?chat_id=".$chat_id."&text=".$text."&ReplyKeyboardMarkup=".$keyboards);
 		}
+		// if(isset($keyboard)){
+		// 	$this->loadUrl("https://api.telegram.org/bot".$this->token."/sendMessage?chat_id=".$chat_id."&text=".$text."&reply_markup=".$keyboard);
+		// }
 		// if(isset($media)){
 		// 	$this->loadUrl("https://api.telegram.org/bot".$this->token."/sendMediaGroup?chat_id=".$chat_id."&media=".$media);
 		// }
@@ -189,14 +196,14 @@ class Telegram_controller extends BaseController{
 			$apiUrl  = array(
 				'hello' => "https://tg.kia24.com/public/api/defaultMessage",
 				'/start' =>  "https://tg.kia24.com/public/api/getWelcomeScreen",
-				'getCategories'=> "https://tg.kia24.com/public/api/getCategories" ,
-				'دسته محصولات'=> "https://tg.kia24.com/public/api/getCategories" ,
-				'contact'=> "https://tg.kia24.com/public/api/contact" ,
-				'تماس با ما'=> "https://tg.kia24.com/public/api/contact" ,
-				'basket'=> "https://tg.kia24.com/public/api/showBasket" ,
-				'سبد خرید'=> "https://tg.kia24.com/public/api/showBasket" ,
-				'tracking'=> "https://tg.kia24.com/public/api/tracking" ,
-				'پیگیری سفارش'=> "https://tg.kia24.com/public/api/tracking" ,
+				'getCategories'=> "https://tg.kia24.com/public/api/getCategories",
+				'دسته محصولات'=> "https://tg.kia24.com/public/api/getCategories",
+				'contact'=> "https://tg.kia24.com/public/api/contact",
+				'تماس با ما'=> "https://tg.kia24.com/public/api/contact",
+				'basket'=> "https://tg.kia24.com/public/api/showBasket",
+				'سبد خرید'=> "https://tg.kia24.com/public/api/showBasket",
+				'tracking'=> "https://tg.kia24.com/public/api/tracking",
+				'پیگیری سفارش'=> "https://tg.kia24.com/public/api/tracking"
 			);
 			$renderedContent = $url = '';
 			if(isset($apiUrl[$data["text"]])){
@@ -209,7 +216,7 @@ class Telegram_controller extends BaseController{
 				// foreach($items as $item)
 				// die;
 				// $chat_id = $items->message->chat->id;
-				$this->replyToTelegram($renderedContent, $chat_id);
+				$this->replyToTelegram($renderedContent);
 			}
 			$last_update_id = $items->update_id;
 		}
