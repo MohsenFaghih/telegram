@@ -20,7 +20,7 @@ class Api extends BaseController
                 array('title'=>'سبد خرید','link'=>'basket'),
                 array('title'=>'پیگیری سفارش','link'=>'tracking'),
             )
-        ); 
+        );
         $this->showResult(200,$info) ;
     }
 
@@ -54,11 +54,11 @@ class Api extends BaseController
             'text' => 'در این بخش تمامی کالاهای مربوط به این دسته بندی نمایش داده می شود',
             'products' => array(
                 array('title'=> 'کیف خرسی شماره ۱', 'picture'=> 'https://www.ninibazar.com/wp-content/uploads/2020/05/baby-bag-bear-1.jpg',
-                      'link' => ('Api/getProductVarient/1') ),
+                      'link' => 'getProductVarient/1'),
                 array('title'=> 'کیف خرسی شماره ۲', 'picture'=> 'https://www.ninibazar.com/wp-content/uploads/2020/05/baby-bag-bear-1.jpg',
-                      'link' => ('Api/getProductVarient/2') ),
+                      'link' => 'getProductVarient/2'),
                 array('title'=> 'کیف خرسی شماره ۳', 'picture'=> 'https://www.ninibazar.com/wp-content/uploads/2020/05/baby-bag-bear-1.jpg',
-                      'link' => ('Api/getProductVarient/3') ),
+                      'link' => 'getProductVarient/3'),
             ),
             'keyboard' => array(
                 array('title'=>'دسته محصولات','link'=>'getCategories'),
@@ -77,19 +77,19 @@ class Api extends BaseController
             'text' => 'در این بخش تمامی کالاهای مربوط به این دسته بندی نمایش داده می شود',
             'products' => array(
                 array('title'=> 'کیف خرسی شماره ۱', 'picture'=> 'https://www.ninibazar.com/wp-content/uploads/2020/05/baby-bag-bear-1.jpg',
-                      'link' => base_url('Api/getProductVarient/1') ),
+                      'link' => 'Api/getProductVarient/1'),
                 array('title'=> 'کیف خرسی شماره ۲', 'picture'=> 'https://www.ninibazar.com/wp-content/uploads/2020/05/baby-bag-bear-1.jpg',
-                      'link' => base_url('Api/getProductVarient/2') ),
+                      'link' => 'Api/getProductVarient/2'),
                 array('title'=> 'کیف خرسی شماره ۳', 'picture'=> 'https://www.ninibazar.com/wp-content/uploads/2020/05/baby-bag-bear-1.jpg',
-                      'link' => base_url('Api/getProductVarient/3') ),
+                      'link' => 'Api/getProductVarient/3'),
             ),
             'keyboard' => array(
-                array('title'=>'دسته محصولات','link'=>base_url('getCategories')),
+                array('title'=>'دسته محصولات','link'=>'getCategories'),
                 array('title'=>'تماس با ما',
-                      'link'=>base_url('contact')),
-                array('title'=>'جستجوی محصولات','link'=>base_url('searchProducts')),
-                array('title'=>'سبد خرید','link'=>base_url('basket')),
-                array('title'=>'پیگیری سفارش','link'=>base_url('tracking')),
+                      'link'=>'contact'),
+                array('title'=>'جستجوی محصولات','link'=>'searchProducts'),
+                array('title'=>'سبد خرید','link'=>'basket'),
+                array('title'=>'پیگیری سفارش','link'=>'tracking'),
             )
         );
 
@@ -101,19 +101,19 @@ class Api extends BaseController
             'text' => 'در این بخش تمامی کالاهای مربوط به این دسته بندی نمایش داده می شود',
             'products' => array(
                 array('title'=> 'کیف خرسی شماره ۱', 'picture'=> 'https://www.ninibazar.com/wp-content/uploads/2020/05/baby-bag-bear-1.jpg',
-                      'link' => base_url('Api/getProductVarient/1') ),
+                      'link' => 'Api/getProductVarient/1'),
                 array('title'=> 'کیف خرسی شماره ۲', 'picture'=> 'https://www.ninibazar.com/wp-content/uploads/2020/05/baby-bag-bear-1.jpg',
-                      'link' => base_url('Api/getProductVarient/2') ),
+                      'link' => 'Api/getProductVarient/2'),
                 array('title'=> 'کیف خرسی شماره ۳', 'picture'=> 'https://www.ninibazar.com/wp-content/uploads/2020/05/baby-bag-bear-1.jpg',
-                      'link' => base_url('Api/getProductVarient/3') ),
+                      'link' => 'Api/getProductVarient/3'),
             ),
             'keyboard' => array(
-                array('title'=>'دسته محصولات','link'=>base_url('getCategories')),
+                array('title'=>'دسته محصولات','link'=>'getCategories'),
                 array('title'=>'تماس با ما',
-                      'link'=>base_url('contact')),
-                array('title'=>'جستجوی محصولات','link'=>base_url('searchProducts')),
-                array('title'=>'سبد خرید','link'=>base_url('basket')),
-                array('title'=>'پیگیری سفارش','link'=>base_url('tracking')),
+                      'link'=>'contact'),
+                array('title'=>'جستجوی محصولات','link'=>'searchProducts'),
+                array('title'=>'سبد خرید','link'=>'basket'),
+                array('title'=>'پیگیری سفارش','link'=>'tracking'),
             )
         );
         
@@ -129,19 +129,19 @@ class Api extends BaseController
             'text' => 'لطفا تنوع کالا را انتخاب کنید',
             'varients' => array(
                 array('title'=> 'رنگ قرمز', 'picture'=> 'https://www.ninibazar.com/wp-content/uploads/2020/05/baby-bag-bear-1.jpg',
-                      'link' => base_url('Api/addBasket/1/1') ),
+                      'link' => 'addBasket/1/1'),
                 array('title'=> 'رنگ آبی', 'picture'=> 'https://www.ninibazar.com/wp-content/uploads/2020/05/baby-bag-bear-1.jpg',
-                      'link' => base_url('Api/addBasket/2/1') ),
+                      'link' => 'addBasket/2/1'),
                 array('title'=> 'رنگ سبز', 'picture'=> 'https://www.ninibazar.com/wp-content/uploads/2020/05/baby-bag-bear-1.jpg',
-                      'link' => base_url('Api/addBasket/3/1') ),
+                      'link' => 'addBasket/3/1'),
             ),
             'keyboard' => array(
-                array('title'=>'دسته محصولات','link'=>base_url('getCategories')),
+                array('title'=>'دسته محصولات','link'=>'getCategories'),
                 array('title'=>'تماس با ما',
-                      'link'=>base_url('contact')),
-                array('title'=>'جستجوی محصولات','link'=>base_url('searchProducts')),
-                array('title'=>'سبد خرید','link'=>base_url('basket')),
-                array('title'=>'پیگیری سفارش','link'=>base_url('tracking')),
+                      'link'=>'contact'),
+                array('title'=>'جستجوی محصولات','link'=>'searchProducts'),
+                array('title'=>'سبد خرید','link'=>'basket'),
+                array('title'=>'پیگیری سفارش','link'=>'tracking'),
             )
         );
         
@@ -181,12 +181,12 @@ class Api extends BaseController
             'totalqnt' => 3,
             'totalprice' => 920000,
             'keyboard' => array(
-                array('title'=>'دسته محصولات','link'=>base_url('getCategories')),
+                array('title'=>'دسته محصولات','link'=>'getCategories'),
                 array('title'=>'تماس با ما',
-                      'link'=>base_url('contact')),
-                array('title'=>'جستجوی محصولات','link'=>base_url('searchProducts')),
-                array('title'=>'سبد خرید','link'=>base_url('basket')),
-                array('title'=>'پیگیری سفارش','link'=>base_url('tracking')),
+                      'link'=>'contact'),
+                array('title'=>'جستجوی محصولات','link'=>'searchProducts'),
+                array('title'=>'سبد خرید','link'=>'basket'),
+                array('title'=>'پیگیری سفارش','link'=>'tracking'),
             )
         );
         
@@ -210,12 +210,12 @@ class Api extends BaseController
                       ),
             ),
             'keyboard' => array(
-                array('title'=>'دسته محصولات','link'=>base_url('getCategories')),
+                array('title'=>'دسته محصولات','link'=>'getCategories'),
                 array('title'=>'تماس با ما',
-                      'link'=>base_url('contact')),
-                array('title'=>'جستجوی محصولات','link'=>base_url('searchProducts')),
-                array('title'=>'سبد خرید','link'=>base_url('basket')),
-                array('title'=>'پیگیری سفارش','link'=>base_url('tracking')),
+                      'link'=>'contact'),
+                array('title'=>'جستجوی محصولات','link'=>'searchProducts'),
+                array('title'=>'سبد خرید','link'=>'basket'),
+                array('title'=>'پیگیری سفارش','link'=>'tracking'),
             )
         );
         $this->showResult(200,$info);
@@ -237,16 +237,16 @@ class Api extends BaseController
         $info = array(
             'text' => 'لطفا شیوه ارسال سفارش را انتخاب نمایید',
             'sendtypes' => array(
-                array('title'=> 'ارسال پستی\n هزینه :‌ ۲۰ هزار تومان \n سه روزه' ,'link' => base_url('Api/selectSendType/1')),
-                array('title'=> 'ارسال تیپاکس\n هزینه :‌ ۳۰ هزار تومان \n ۱ روزه' ,'link' => base_url('Api/selectSendType/2'))
+                array('title'=> 'ارسال پستی\n هزینه :‌ ۲۰ هزار تومان \n سه روزه' ,'link' => 'Api/selectSendType/1'),
+                array('title'=> 'ارسال تیپاکس\n هزینه :‌ ۳۰ هزار تومان \n ۱ روزه' ,'link' => 'Api/selectSendType/2')
             ),
             'keyboard' => array(
-                array('title'=>'دسته محصولات','link'=>base_url('getCategories')),
+                array('title'=>'دسته محصولات','link'=>'getCategories'),
                 array('title'=>'تماس با ما',
-                      'link'=>base_url('contact')),
-                array('title'=>'جستجوی محصولات','link'=>base_url('searchProducts')),
-                array('title'=>'سبد خرید','link'=>base_url('basket')),
-                array('title'=>'پیگیری سفارش','link'=>base_url('tracking')),
+                      'link'=>'contact'),
+                array('title'=>'جستجوی محصولات','link'=>'searchProducts'),
+                array('title'=>'سبد خرید','link'=>'basket'),
+                array('title'=>'پیگیری سفارش','link'=>'tracking'),
             )
         );
         $this->showResult(200,$info);
@@ -267,12 +267,12 @@ class Api extends BaseController
         $info = array(
             'link' => 'http://shaparak.com/us/sdfsdf',
             'keyboard' => array(
-                array('title'=>'دسته محصولات','link'=>base_url('getCategories')),
+                array('title'=>'دسته محصولات','link'=>'getCategories'),
                 array('title'=>'تماس با ما',
-                      'link'=>base_url('contact')),
-                array('title'=>'جستجوی محصولات','link'=>base_url('searchProducts')),
-                array('title'=>'سبد خرید','link'=>base_url('basket')),
-                array('title'=>'پیگیری سفارش','link'=>base_url('tracking')),
+                      'link'=>'contact'),
+                array('title'=>'جستجوی محصولات','link'=>'searchProducts'),
+                array('title'=>'سبد خرید','link'=>'basket'),
+                array('title'=>'پیگیری سفارش','link'=>'tracking'),
             )
         );
     }
@@ -281,10 +281,10 @@ class Api extends BaseController
         $info = array(
             "text"=> "برای تماس با ما از راه های زیر میتوانید اقدام کنید \n info@gmail.com",
             'keyboard' => array(
-                array('title'=>'دسته محصولات','link'=>base_url('getCategories')),
-                array('title'=>'جستجوی محصولات','link'=>base_url('searchProducts')),
-                array('title'=>'سبد خرید','link'=>base_url('basket')),
-                array('title'=>'پیگیری سفارش','link'=>base_url('tracking')),
+                array('title'=>'دسته محصولات','link'=>'getCategories'),
+                array('title'=>'جستجوی محصولات','link'=>'searchProducts'),
+                array('title'=>'سبد خرید','link'=>'basket'),
+                array('title'=>'پیگیری سفارش','link'=>'tracking'),
             )
         );
         $this->showResult(200,$info);
@@ -313,12 +313,12 @@ class Api extends BaseController
                     ),
             ),
             'keyboard' => array(
-                array('title'=>'دسته محصولات','link'=>base_url('getCategories')),
+                array('title'=>'دسته محصولات','link'=>'getCategories'),
                 array('title'=>'تماس با ما',
-                      'link'=>base_url('contact')),
-                array('title'=>'جستجوی محصولات','link'=>base_url('searchProducts')),
-                array('title'=>'سبد خرید','link'=>base_url('basket')),
-                array('title'=>'پیگیری سفارش','link'=>base_url('tracking')),
+                      'link'=>'contact'),
+                array('title'=>'جستجوی محصولات','link'=>'searchProducts'),
+                array('title'=>'سبد خرید','link'=>'basket'),
+                array('title'=>'پیگیری سفارش','link'=>'tracking'),
             )
         );
         $this->showResult(200,$info);
@@ -332,10 +332,10 @@ class Api extends BaseController
         $info = array(
             'text'=> 'کالای شما به پست فرستاده شده است و تا ۲۴ ساعت آینده به دست شما خواهد رسید',
             'keyboard' => array(
-                array('title'=>'دسته محصولات','link'=>base_url('getCategories')),
-                array('title'=>'جستجوی محصولات','link'=>base_url('searchProducts')),
-                array('title'=>'سبد خرید','link'=>base_url('basket')),
-                array('title'=>'پیگیری سفارش','link'=>base_url('tracking')),
+                array('title'=>'دسته محصولات','link'=>'getCategories'),
+                array('title'=>'جستجوی محصولات','link'=>'searchProducts'),
+                array('title'=>'سبد خرید','link'=>'basket'),
+                array('title'=>'پیگیری سفارش','link'=>'tracking'),
             )
         );
         $this->showResult(200,$info);
@@ -345,12 +345,12 @@ class Api extends BaseController
         $info = array(
             'text' => "پیام شما مفهوم نیست لطفا از لیست زیر کمک بگیرید",
             'default' => array(
-                array('title'=>'دسته محصولات','link'=>base_url('getCategories')),
+                array('title'=>'دسته محصولات','link'=>'getCategories'),
                 array('title'=>'تماس با ما',
-                      'link'=>base_url('contact')),
-                array('title'=>'جستجوی محصولات','link'=>base_url('searchProducts')),
-                array('title'=>'سبد خرید','link'=>base_url('basket')),
-                array('title'=>'پیگیری سفارش','link'=>base_url('tracking')),
+                      'link'=>'contact'),
+                array('title'=>'جستجوی محصولات','link'=>'searchProducts'),
+                array('title'=>'سبد خرید','link'=>'basket'),
+                array('title'=>'پیگیری سفارش','link'=>'tracking'),
             )
         ); 
         $this->showResult(200,$info) ;

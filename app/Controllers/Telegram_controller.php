@@ -22,6 +22,7 @@ class Telegram_controller extends BaseController{
 			print curl_error($ch); 
 		}
 		$result = curl_exec($ch);
+		var_dump($url);
 		$result = json_decode($result);
 		curl_close($ch);
 		return $result; 
@@ -34,16 +35,16 @@ class Telegram_controller extends BaseController{
 			$text_reply = $content->text;
 			$result["text"] = $text_reply;
 		}
-		// if(isset($content->keyboard)){
-		// 	$keyboard = $this->renderKeyboard($content->keyboard);
-		// 	$result["keyboard"] = $keyboard;
-		// }
-		if(isset($content->default)){
-			$inlineKeyboard = $this->renderInlineButton($content->default);
-			$result["inlineKeyboard"] = $inlineKeyboard;
-		}
 		if(isset($content->keyboard)){
-			$inlineKeyboard = $this->renderInlineButton($content->keyboard);
+			$keyboard = $this->renderInlineButton($content->keyboard);
+			$result['keyboard'] = $keyboard;
+		}
+		if(isset($content->default)){
+			$keyboard = $this->renderInlineButton($content->default);
+			$result['keyboard'] = $keyboard;
+		}
+		if(isset($content->categories)){
+			$inlineKeyboard = $this->renderInlineButton($content->categories);
 			$result["inlineKeyboard"] = $inlineKeyboard;
 		}
 		if(isset($content->products)){
@@ -53,22 +54,23 @@ class Telegram_controller extends BaseController{
 		return $result;
 	}
 	
-	private function renderKeyboard($content){
-		$final = array();
-		for($i = 0 ; $i < count($content); $i+=2){
-			$temp=array();
-			if(isset($content[$i])){
-				$temp[] = array($content[$i]->title);
-			};
-			if(isset($content[$i+1])){
-				$temp[] = array($content[$i+1]->title);
-			};
-			$final['keyboard'][] = $temp;
-		}
-		$final['keyboard']['one_time_keyboard'] = true;
-		$final['keyboard']['resize_keyboard'] = true;
-		return json_encode($final);;
-	}
+	// private function renderKeyboard($content){ // not yet
+	// 	$final = array();
+	// 	for($i = 0 ; $i < count($content); $i+=2){
+	// 		$temp=array();
+	// 		if(isset($content[$i])){
+	// 			$temp[] = array($content[$i]->title);
+	// 		};
+	// 		if(isset($content[$i+1])){
+	// 			$temp[] = array($content[$i+1]->title);
+	// 		};
+	// 		$final['keyboard'][] = $temp;
+	// 	}
+	// 	$final['keyboard']['one_time_keyboard'] = false;
+	// 	$final['keyboard']['resize_keyboard'] = true;
+	// 	$final['keyboard']['hide_keyboard'] = false;
+	// 	return json_encode($final);;
+	// }
 
 	public function renderInlineButton($content=''){
 		$keyboardArray = array();
@@ -94,15 +96,37 @@ class Telegram_controller extends BaseController{
 		$i = 0;
 		if(isset($content[$i])){
 			for($i = 0; $i < count($content); $i++){
-				$media[] = array('type' => 'photo', 'media' => $content[$i]->picture, 'caption' => $content[$i]->title, 'link' => $content[$i]->link);
+				// $media[] = array('type' => 'photo', 'media' => $content[$i]->picture, 'caption' => $content[$i]->title, 'link' => $content[$i]->link);
+				$media[] = array(
+					'type' => 'photo',
+					'id' => $content[$i]->id !== NULL ? $content[$i]->id : '',
+					'title' => $content[$i]->title !== NULL ? $content[$i]->title : '',
+					'varient' => $content[$i]->varient !== NULL ? $content[$i]->varient : '',
+					'qnt' => $content[$i]->qnt !== NULL ? $content[$i]->qnt : '',
+					'media' => $content[$i]->picture,
+					'price' => $content[$i]->price !== NULL ? $content[$i]->price : '',
+					'caption' => $content[$i]->title !== NULL ? $content[$i]->title : '',
+					// 'link' => $content[$i]->link !== NULL ? $content[$i]->link : '',
+				);
 			}
 		}
 		return $media;
 	}
 
+	// public function renderBasket(){
+	// 	$basket = array();
+	// 	$i = 0;
+	// 	if(isset($content[$i])){
+	// 		for($i=0; $i < count($content); $i++){
+	// 			$basket[] = array('type' => 'media')
+	// 		}
+	// 	}
+	// }
+
 	public function getUpdates(){
-		$offset = file_exists(FCPATH.$this->offset_file) ? file_get_contents($this->offset_file) : 0;	
+		$offset = file_exists(FCPATH.$this->offset_file) ? file_get_contents($this->offset_file) : 0;
 		$result = $this->loadUrl($this->url."getUpdates?offset=".$offset);
+		// var_dump($result); die;
 		if(isset($result)){
 			foreach($result->result as $items){
 				if($items->update_id != $offset)
@@ -111,26 +135,29 @@ class Telegram_controller extends BaseController{
 		}
 	}
 
-	public function replyToTelegram($data, $chat_id){	
+	public function replyToTelegram($data){	
 		$text = isset($data['text']) ? str_replace(PHP_EOL, '', $data['text']) : '';
 		$keyboard = isset($data['keyboard']) ? str_replace(PHP_EOL, '', $data['keyboard']) : '';
 		$inlineKeyboard = isset($data['inlineKeyboard']) ? str_replace(PHP_EOL, '', $data['inlineKeyboard']) : '';
 		$media = isset($data['media']) ? $data['media'] : '';
-		if(isset($Keyboard)){
-			$this->loadUrl("https://api.telegram.org/bot".$this->token."/sendMessage?chat_id=".$chat_id."&text=".$text."&ReplyKeyboardMarkup=".$keyboard);
-		}
-		if(isset($media) && !isset($keyboard)){
-			$this->loadUrl("https://api.telegram.org/bot".$this->token."/sendMediaGroup?chat_id=".$chat_id."&media=".$media);
+		$chat_id = $data['data']['chat_id'];
+	
 
-		}
-		if(isset($photo)){
-			$this->loadUrl("https://api.telegram.org/bot".$this->token."/sendMediaGroup?chat_id=".$chat_id."&photo=".$photo);
-		}	
-				
-		if(isset($inlineKeyboard)){
-			$this->loadUrl("https://api.telegram.org/bot".$this->token."/sendMessage?chat_id=".$chat_id."&text=".$text."&reply_markup=".$inlineKeyboard);
+		// header("location: https://api.telegram.org/bot1456393662:AAE6ckb3yoCRRoR9EOi-aB3GvcsRDhvTUJQ/sendMessage?chat_id=".$chat_id."&text=".$text."&reply_markup=".$keyboard);
+		// exit();
 
+		if(isset($keyboard)){
+			$this->loadUrl("https://api.telegram.org/bot".$this->token."/sendMessage?chat_id=".$chat_id."&text=".$text."&reply_markup=".($keyboard));
 		}
+		// if(isset($media)){
+		// 	$this->loadUrl("https://api.telegram.org/bot".$this->token."/sendMediaGroup?chat_id=".$chat_id."&media=".$media);
+		// }
+		// if(isset($photo)){
+		// 	$this->loadUrl("https://api.telegram.org/bot".$this->token."/sendMediaGroup?chat_id=".$chat_id."&photo=".$photo);
+		// }	
+		// if(isset($inlineKeyboard)){
+		// 	$this->loadUrl("https://api.telegram.org/bot".$this->token."/sendMessage?chat_id=".$chat_id."&text=".$text."&reply_markup=".$inlineKeyboard);
+		// }
 	}
 
 	public function responseToMessage($sendMessage){
@@ -140,11 +167,13 @@ class Telegram_controller extends BaseController{
 			if(isset($items->callback_query)){
 				$data['callback_query_id'] = $items->callback_query->id;
 				$data['text'] = $items->callback_query->data;
+				$chat_id = $items->callback_query->message->chat->id;
 				$this->loadUrl($this->url."/answerCallbackQuery?callback_query_id=".$items->callback_query->id);
 				echo ('call back answered:'.$items->callback_query->id);
 			}
 			else{
 				$data['text'] = isset($items->message->text) ? $items->message->text: '';
+				$chat_id = $items->message->chat->id;
 			}
 			
 			$data['update_id'] = isset($items->update_id) ? $items->update_id : '';
@@ -163,26 +192,27 @@ class Telegram_controller extends BaseController{
 			$apiUrl  = array(
 				'hello' => "https://tg.kia24.com/public/api/defaultMessage",
 				'/start' =>  "https://tg.kia24.com/public/api/getWelcomeScreen",
-				'getCategories'=> "https://tg.kia24.com/public/api/getCategories" ,
-				'دسته محصولات'=> "https://tg.kia24.com/public/api/getCategories" ,
-				'getCatProducts'=> "https://tg.kia24.com/public/api/getCatProducts/1" ,
-				'topSellItems'=> "https://tg.kia24.com/public/api/topSellItems" ,
-				'topSellItems'=> "https://tg.kia24.com/public/api/topSellItems" ,
+				'getCategories'=> "https://tg.kia24.com/public/api/getCategories",
+				'دسته محصولات'=> "https://tg.kia24.com/public/api/getCategories",
+				'contact'=> "https://tg.kia24.com/public/api/contact",
+				'تماس با ما'=> "https://tg.kia24.com/public/api/contact",
+				'basket'=> "https://tg.kia24.com/public/api/showBasket",
+				'سبد خرید'=> "https://tg.kia24.com/public/api/showBasket",
+				'tracking'=> "https://tg.kia24.com/public/api/tracking",
+				'پیگیری سفارش'=> "https://tg.kia24.com/public/api/tracking"
 			);
 			$renderedContent = $url = '';
 			if(isset($apiUrl[$data["text"]])){
 				$url = $apiUrl[$data["text"]];
 			}
-							
+			
 			$content = $this->loadUrl($url);
 			if(isset($content->content)){
 				$renderedContent = $this->renderForTelegram($content->content, $data);
-				if(isset($items->message->chat->id))
-					$chat_id = $items->message->chat->id;
-				// var_dump($chat_id); die();
-				// if(isset($items->message->chat->id)){
-				// 	$chat_id = $items->message->chat->id;
-				$this->replyToTelegram($renderedContent, $chat_id);
+				// foreach($items as $item)
+				// die;
+				// $chat_id = $items->message->chat->id;
+				$this->replyToTelegram($renderedContent);
 			}
 			$last_update_id = $items->update_id;
 		}
