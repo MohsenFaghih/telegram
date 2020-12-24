@@ -13,7 +13,7 @@ class Api extends BaseController
     public function getWelcomeScreen(){
         $info = array(
             'text' => "به فروشگاه محله خوش آمدید\nلطفا از منو  گزینه مناسب را انتخاب نمایید",
-            'keyboard' => array(
+            'keyboards' => array(
                 array('title'=>'دسته محصولات','link'=>'getCategories'),
                 array('title'=>'تماس با ما', 'link'=>'contact'),
                 array('title'=>'جستجوی محصولات','link'=>'searchProducts'),
