@@ -13,7 +13,7 @@ class Api extends BaseController
     public function getWelcomeScreen(){
         $info = array(
             'text' => "به فروشگاه محله خوش آمدید\nلطفا از منو  گزینه مناسب را انتخاب نمایید",
-            'keyboards' => array(
+            'keyboard' => array(
                 array('title'=>'دسته محصولات','link'=>'getCategories'),
                 array('title'=>'تماس با ما', 'link'=>'contact'),
                 array('title'=>'جستجوی محصولات','link'=>'searchProducts'),
@@ -291,9 +291,9 @@ class Api extends BaseController
     }
 
     public function searchProducts(){
-        $term = $this->request->getGet('q');
-        if($term == '')
-            $this->showResult(412,'Empty search term');
+        // $term = $this->request->getGet('q');
+        // if($term == '')
+        //     $this->showResult(412,'Empty search term');
         $info = array(
             'text' => 'لیست جستجو شما به شکل زیر می باشد',
             'products' => array(
@@ -302,14 +302,14 @@ class Api extends BaseController
                       'picture'=> 'https://www.ninibazar.com/wp-content/uploads/2020/05/baby-bag-bear-1.jpg',
                       'varient' => 'رنگ قرمز ' , 
                       'price' => 240000,
-                      'link'  => base_url('Api/getProductVarient/1')
+                      'link'  => 'Api/getProductVarient/1'
                     ),
                 array('id'=>2, 
                       'title'=> 'کیف خرسی ۲', 
                       'picture'=> 'https://www.ninibazar.com/wp-content/uploads/2020/05/baby-bag-bear-1.jpg',
                       'varient' => 'رنگ آبی ' , 
                       'price' => 44000,
-                      'link'  => base_url('Api/getProductVarient/2')
+                      'link'  => 'Api/getProductVarient/2'
                     ),
             ),
             'keyboard' => array(
@@ -344,7 +344,7 @@ class Api extends BaseController
     public function defaultMessage(){
         $info = array(
             'text' => "پیام شما مفهوم نیست لطفا از لیست زیر کمک بگیرید",
-            'default' => array(
+            'keyboard' => array(
                 array('title'=>'دسته محصولات','link'=>'getCategories'),
                 array('title'=>'تماس با ما',
                       'link'=>'contact'),
