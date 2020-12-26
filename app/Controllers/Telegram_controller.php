@@ -101,10 +101,19 @@ class Telegram_controller extends BaseController{
 					// 'link' => $content[$i]->link !== NULL ? $content[$i]->link : '' ,
 					// 'qnt' => $content[$i]->qnt !== NULL ? $content[$i]->qnt : ''
 					'extra' => array(
-						'messageEntityTextUrl' => array(
-							'offset' => 1,
-							'length' => 100,
-							'url' => 'https://google.com'
+						'MessageEntity' => array(
+							array(
+								'type' => 'cashtag',
+								'offset' => 1,
+								'length' => 100,
+								'url' => 'https://google.com'
+							),
+							// array(
+							// 	'type' => 'url',
+							// 	'offset' => 1,
+							// 	'length' => 100,
+							// 	'url' => 'https://google.com'
+							// )
 						)
 					)
 				);
